@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace MinhaApiCore.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class ValuesController : ControllerBase
+    public class ValuesController : MainController
     {
         // GET api/values
         [HttpGet] //actionResult tipado, retorna um BadRequest específico e um tipo
@@ -30,9 +29,9 @@ namespace MinhaApiCore.Controllers
             var valores = new string[] { "value1", "value2" };
 
             if (valores.Length < 5000)
-                return BadRequest();
+                return CustomResponse();
 
-            return Ok(valores);
+            return CustomResponse(valores);
         }
 
         [HttpGet("obter-valores")] //tipado sem actionResult, não retorna um resultado, apenas o tipo
@@ -76,6 +75,39 @@ namespace MinhaApiCore.Controllers
         [HttpDelete("{id}")]
         public void Delete([FromQuery]int id)
         {
+        }
+    }
+
+    [ApiController]
+    public abstract class MainController : ControllerBase
+    {
+        protected ActionResult CustomResponse(object result = null)
+        {
+            if (OperacaoValida())
+            {
+                return Ok(value:new
+                {
+                    sucess = true,
+                    data = result
+                });
+            }
+
+            return BadRequest(error:new
+            {
+                sucess = false,
+                errors = ObterErros()
+            });
+        }
+
+        public bool OperacaoValida()
+        {
+            // validações
+            return true;
+        }
+
+        protected string ObterErros()
+        {
+            return "";
         }
     }
 
