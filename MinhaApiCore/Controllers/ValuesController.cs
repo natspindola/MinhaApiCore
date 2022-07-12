@@ -12,9 +12,25 @@ namespace MinhaApiCore.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<string>> ObterTodos()
         {
-            return new string[] { "value1", "value2" };
+            var valores = new string[] { "value1", "value2" };
+
+            if (valores.Length < 5000)
+                return BadRequest();
+
+            return Ok(valores);
+        }
+
+        [HttpGet("obter-valores")]
+        public IEnumerable<string> ObterValores()
+        {
+            var valores = new string[] { "value1", "value2" };
+
+            if (valores.Length < 5000)
+                return null;
+
+            return valores;
         }
 
         // GET api/values/5
