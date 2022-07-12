@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MinhaApiCore.Model
 {
-    public class FornecedorViewModel
+    public class Fornecedor
     {
         [Key]
         public Guid Id { get; set; }
