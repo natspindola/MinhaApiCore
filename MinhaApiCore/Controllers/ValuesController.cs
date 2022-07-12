@@ -54,15 +54,18 @@ namespace MinhaApiCore.Controllers
 
         // POST api/values
         [HttpPost]
-        [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)] //retorna um statusCode específico
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(typeof(Product), StatusCodes.Status201Created)] //retorna um statusCode específico
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))] //implementa os produces por convenção
         public ActionResult Post(Product product)
         {
             if (product.Id == 0) return BadRequest();
 
             //add no banco
 
-            return CreatedAtAction("Post", product);
+            //return Ok(product); //retorna o status 200
+            return CreatedAtAction("Post", product); //retorna o status 201
         }
 
         // PUT api/values/5
@@ -73,7 +76,7 @@ namespace MinhaApiCore.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete([FromQuery]int id)
+        public void Delete([FromQuery] int id)
         {
         }
     }
@@ -85,14 +88,14 @@ namespace MinhaApiCore.Controllers
         {
             if (OperacaoValida())
             {
-                return Ok(value:new
+                return Ok(value: new
                 {
                     sucess = true,
                     data = result
                 });
             }
 
-            return BadRequest(error:new
+            return BadRequest(error: new
             {
                 sucess = false,
                 errors = ObterErros()
