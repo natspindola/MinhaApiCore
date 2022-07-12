@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace MinhaApiCore.Controllers
     public class ValuesController : ControllerBase
     {
         // GET api/values
-        [HttpGet] //retorna um BadRequest específico
+        [HttpGet] //actionResult tipado, retorna um BadRequest específico e um tipo
         public ActionResult<IEnumerable<string>> ObterTodos()
         {
             var valores = new string[] { "value1", "value2" };
@@ -23,7 +24,7 @@ namespace MinhaApiCore.Controllers
             return valores;
         }
 
-        [HttpGet] //retorna apenas o resultado
+        [HttpGet] //actionResult não tipado, retorna apenas o resultado e não o tipo
         public ActionResult ObterResultado()
         {
             var valores = new string[] { "value1", "value2" };
@@ -34,7 +35,7 @@ namespace MinhaApiCore.Controllers
             return Ok(valores);
         }
 
-        [HttpGet("obter-valores")] //não retorna um código específico
+        [HttpGet("obter-valores")] //tipado sem actionResult, não retorna um resultado, apenas o tipo
         public IEnumerable<string> ObterValores()
         {
             var valores = new string[] { "value1", "value2" };
@@ -54,8 +55,15 @@ namespace MinhaApiCore.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post(Product value)
+        [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)] //retorna um statusCode específico
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult Post(Product product)
         {
+            if (product.Id == 0) return BadRequest();
+
+            //add no banco
+
+            return CreatedAtAction("Post", product);
         }
 
         // PUT api/values/5
