@@ -64,14 +64,22 @@ namespace MinhaApiCore.Controllers
 
             //add no banco
 
-            //return Ok(product); //retorna o status 200
-            return CreatedAtAction("Post", product); //retorna o status 201
+            //return Ok(product); //retorna o status 200, sucesso
+            return CreatedAtAction("Post", product); //retorna o status 201, sucesso um novo recurso foi criado
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromForm] Product value)
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
+        public ActionResult Put([FromForm] int id, [FromForm] Product product)
         {
+            if (!ModelState.IsValid) return BadRequest();
+
+            if (id != product.Id) return NotFound();
+
+            //add no banco
+
+            return NoContent(); //retorna o status 204, solicitação bem sucedida
         }
 
         // DELETE api/values/5
