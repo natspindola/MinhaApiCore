@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+[assembly: ApiConventionType(typeof(DefaultApiConventions))] //usado em toda a aplicação 
 namespace MinhaApiCore
 {
     public class Startup
