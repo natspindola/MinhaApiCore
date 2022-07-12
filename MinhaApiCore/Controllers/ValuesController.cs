@@ -11,8 +11,19 @@ namespace MinhaApiCore.Controllers
     public class ValuesController : ControllerBase
     {
         // GET api/values
-        [HttpGet]
+        [HttpGet] //retorna um BadRequest específico
         public ActionResult<IEnumerable<string>> ObterTodos()
+        {
+            var valores = new string[] { "value1", "value2" };
+
+            if (valores.Length < 5000)
+                return BadRequest();
+
+            return valores;
+        }
+
+        [HttpGet] //retorna apenas o resultado
+        public ActionResult ObterResultado()
         {
             var valores = new string[] { "value1", "value2" };
 
@@ -22,7 +33,7 @@ namespace MinhaApiCore.Controllers
             return Ok(valores);
         }
 
-        [HttpGet("obter-valores")]
+        [HttpGet("obter-valores")] //não retorna um código específico
         public IEnumerable<string> ObterValores()
         {
             var valores = new string[] { "value1", "value2" };
