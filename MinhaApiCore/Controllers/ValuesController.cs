@@ -12,7 +12,10 @@ namespace MinhaApiCore.Controllers
     public class ValuesController : MainController
     {
         // GET api/values
-        [HttpGet] //actionResult tipado, retorna um BadRequest específico e um tipo
+        [HttpGet("obter-todos")] //actionResult tipado, retorna um BadRequest específico e um tipo
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public ActionResult<IEnumerable<string>> ObterTodos()
         {
             var valores = new string[] { "value1", "value2" };
@@ -23,7 +26,7 @@ namespace MinhaApiCore.Controllers
             return valores;
         }
 
-        [HttpGet] //actionResult não tipado, retorna apenas o resultado e não o tipo
+        [HttpGet("obter-resultado")] //actionResult não tipado, retorna apenas o resultado e não o tipo
         public ActionResult ObterResultado()
         {
             var valores = new string[] { "value1", "value2" };
